@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 你可以在这里添加针对作品集的自定义字体或全局平滑滚动 */
+html {
+  scroll-behavior: smooth;
+}
