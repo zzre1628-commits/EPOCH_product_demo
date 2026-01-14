@@ -214,8 +214,8 @@ const MePageDesign = () => {
   );
 };
 
-// --- 用户体验全链路 ---
-// --- 用户体验全链路 (比例平衡版) ---
+
+// --- 用户体验全链路 (呼吸感比例优化版) ---
 
 const VisualSPath = () => {
   const steps = [
@@ -227,28 +227,29 @@ const VisualSPath = () => {
   ];
 
   return (
-    /* 1. 栅格比例微调为 1.1:0.9，给右侧图片留出更多呼吸空间 */
-    <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-24 items-start">
+    /* 1. 栅格比例调整为 1:1，为右侧“宽占位”腾出物理空间 */
+    <div className="grid lg:grid-cols-[1fr_1fr] gap-24 items-start">
       
-      {/* 左侧：拉长纵向跨度 */}
-      <div className="relative py-24 px-8 text-left">
-        {/* 背景虚线 */}
-        <div className="absolute top-0 left-[36px] w-0.5 h-full bg-indigo-50 -z-10"></div>
+      {/* 左侧：深度拉长文案占位 */}
+      <div className="relative py-28 px-8 text-left">
+        {/* 背景装饰线 */}
+        <div className="absolute top-0 left-[40px] w-0.5 h-full bg-indigo-50 -z-10"></div>
         
-        {/* 2. space-y-32: 大幅增加步骤之间的间距，让文案纵向铺开 */}
-        <div className="space-y-32">
+        {/* 2. space-y-40: 极致的步骤间距，确保文案在纵向上与长图对齐 */}
+        <div className="space-y-40">
           {steps.map((s, i) => (
-            <div key={i} className={`flex gap-10 items-start group ${i % 2 === 1 ? 'lg:translate-x-12' : ''} transition-transform`}>
-              <div className="w-16 h-16 shrink-0 bg-white border-2 border-indigo-500 rounded-2xl flex items-center justify-center text-indigo-500 shadow-md group-hover:bg-indigo-600 group-hover:text-white transition-all">
-                {s.icon}
+            <div key={i} className={`flex gap-10 items-start group ${i % 2 === 1 ? 'lg:translate-x-14' : ''} transition-transform`}>
+              <div className="w-20 h-20 shrink-0 bg-white border-2 border-indigo-500 rounded-[1.5rem] flex items-center justify-center text-indigo-500 shadow-md group-hover:bg-indigo-600 group-hover:text-white transition-all">
+                {/* 增大图标尺寸提升视觉量感 */}
+                {React.cloneElement(s.icon, { size: 28 })}
               </div>
-              <div className="pt-2">
-                <div className="flex items-center gap-3 mb-3">
-                   <p className="font-black text-gray-900 text-lg tracking-tight">{s.label}</p>
-                   <span className="text-[10px] bg-gray-100 text-gray-400 px-2 py-0.5 rounded font-bold uppercase tracking-tighter">{s.sub}</span>
+              <div className="pt-3">
+                <div className="flex items-center gap-3 mb-4">
+                   <p className="font-black text-gray-900 text-xl tracking-tight">{s.label}</p>
+                   <span className="text-[10px] bg-indigo-50 text-indigo-600 px-2 py-1 rounded font-black uppercase tracking-widest">{s.sub}</span>
                 </div>
-                {/* 3. leading-loose: 加大行间距，让文字描述部分占据更多高度 */}
-                <p className="text-sm text-gray-500 leading-loose max-w-md font-medium">
+                {/* 3. leading-[2]: 极致行间距（双倍行距），让文字块在纵向上更“占地” */}
+                <p className="text-sm text-gray-500 leading-[2] max-w-md font-medium">
                   {s.desc}
                 </p>
               </div>
@@ -257,21 +258,26 @@ const VisualSPath = () => {
         </div>
       </div>
 
-      {/* 右侧：等比例放大图片 */}
-      <div className="sticky top-32 flex flex-col items-center">
-        {/* 4. max-w-[320px]: 将最大宽度从 240px 放大到 320px，视觉上更清晰协调 */}
-        <div className="w-full max-w-[320px] transition-all duration-500">
-          <ImageSlot title="用户全链路逻辑流程图" src="/流程图.png" />
-          <div className="mt-8 text-center space-y-2">
-            <p className="text-[10px] font-black text-indigo-400 uppercase tracking-[0.3em]">Full Lifecycle</p>
-            <p className="text-[10px] font-black text-gray-300 uppercase tracking-widest">User Flow Diagram</p>
+      {/* 右侧：宽占位容器 + 缩放后的素材 */}
+      <div className="sticky top-24 flex flex-col items-center">
+        {/* 4. max-w-[480px] & p-16: 
+           - 将占位容器拉宽到 480px 
+           - 通过 p-16 (64px) 的内边距，让内部的流程图不再紧贴边缘，消除局促感 */}
+        <div className="w-full max-w-[480px] bg-white rounded-[3rem] p-16 shadow-sm border border-gray-100/50 flex flex-col items-center">
+          <div className="w-full transition-transform hover:scale-[1.02] duration-500">
+             <ImageSlot title="全链路流程图" src="/流程图.png" />
+          </div>
+          
+          <div className="mt-12 text-center space-y-3">
+            <div className="h-1 w-12 bg-indigo-500 mx-auto rounded-full mb-4"></div>
+            <p className="text-[11px] font-black text-indigo-600 uppercase tracking-[0.4em]">Full-Lifecycle Logic</p>
+            <p className="text-[10px] font-black text-gray-300 uppercase tracking-widest">Digital Twin Narrative Flow</p>
           </div>
         </div>
       </div>
     </div>
   );
 };
-
 
 
 // --- 技术架构与数据库 ---
