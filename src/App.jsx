@@ -33,29 +33,31 @@ const SectionTitle = ({ children, subtitle, light = false }) => (
   </div>
 );
 
-// --- 补全：支持本地视频播放的组件 ---
-// 优化后的视频组件：移除代码外框，适配自带外壳的视频素材
-// 优化版视频组件：强效居中适配自带外壳的素材
-const VideoSlot = ({ title, src, ratio = "aspect-[9/19.5]" }) => (
-  /* 1. flex items-center justify-center: 确保子元素（视频）在水平和垂直方向永远居中。
-    2. max-w-[360px]: 稍微调大了一点宽度，让手机模型在网页上更饱满。
+
+// 完美适配版视频组件：消除黑边，确保容器比例与视频像素完全一致
+const VideoSlot = ({ title, src }) => (
+  /* 1. 移除了 aspect-[9/19.5] 固定比例类。
+     2. bg-transparent: 确保即使有 1 像素的误差，背景也是透明的，不会出现黑条。
+     3. max-w-[340px]: 统一控制视频在网页上的最大宽度。
   */
-  <div className={`relative mx-auto w-full max-w-[360px] ${ratio} flex items-center justify-center overflow-hidden group`}>
+  <div className="relative mx-auto w-full max-w-[340px] flex items-center justify-center overflow-hidden group bg-transparent">
     {src ? (
       <video 
         src={src} 
-        /* object-contain: 确保视频完整显示不被裁剪。
-          pointer-events-none: 防止用户误点视频触发暂停。
+        /* w-full h-auto: 关键属性！它会让视频按其原始宽高比进行渲染，
+           并自动撑开父容器，从而实现“占位符与视频像素比例完全相同”。
         */
-        className="w-full h-full object-contain pointer-events-none" 
+        className="w-full h-auto block pointer-events-none" 
         autoPlay 
         loop 
         muted 
         playsInline 
       />
     ) : (
-      /* 占位状态保持不变 */
-      <div className="flex flex-col items-center opacity-20 text-center px-6">
+      /* 未加载视频时，保持一个默认的手机比例占位，
+         使用了 bg-gray-50 增加视觉存在感。
+      */
+      <div className="aspect-[9/19.5] w-full bg-gray-50 rounded-[3rem] flex flex-col items-center justify-center opacity-20 text-center px-6">
         <Play size={32} fill="currentColor" />
         <p className="text-[10px] font-black uppercase tracking-widest mt-4 text-gray-400">{title || "演示视频占位"}</p>
       </div>
