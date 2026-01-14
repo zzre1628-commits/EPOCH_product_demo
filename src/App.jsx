@@ -35,16 +35,19 @@ const SectionTitle = ({ children, subtitle, light = false }) => (
 
 // --- 补全：支持本地视频播放的组件 ---
 // 优化后的视频组件：移除代码外框，适配自带外壳的视频素材
+// 优化版视频组件：强效居中适配自带外壳的素材
 const VideoSlot = ({ title, src, ratio = "aspect-[9/19.5]" }) => (
-  /* 1. 移除了 border-[8px] 和 border-gray-900 
-     2. 保留了 max-w-[320px] 确保在网页上显示大小适中
-     3. rounded-[2rem] 可以保留一个微小的圆角，防止视频边缘太尖锐
+  /* 1. flex items-center justify-center: 确保子元素（视频）在水平和垂直方向永远居中。
+    2. max-w-[360px]: 稍微调大了一点宽度，让手机模型在网页上更饱满。
   */
-  <div className={`relative mx-auto w-full max-w-[320px] ${ratio} rounded-[2rem] overflow-hidden group flex flex-col items-center justify-center`}>
+  <div className={`relative mx-auto w-full max-w-[360px] ${ratio} flex items-center justify-center overflow-hidden group`}>
     {src ? (
       <video 
         src={src} 
-        className="w-full h-full object-cover" 
+        /* object-contain: 确保视频完整显示不被裁剪。
+          pointer-events-none: 防止用户误点视频触发暂停。
+        */
+        className="w-full h-full object-contain pointer-events-none" 
         autoPlay 
         loop 
         muted 
@@ -52,14 +55,11 @@ const VideoSlot = ({ title, src, ratio = "aspect-[9/19.5]" }) => (
       />
     ) : (
       /* 占位状态保持不变 */
-      <div className="flex flex-col items-center opacity-30 text-center px-6">
-        <div className="w-16 h-16 bg-indigo-50 rounded-full flex items-center justify-center text-indigo-600 mb-4">
-          <Play size={32} fill="currentColor" />
-        </div>
-        <p className="text-xs font-black uppercase tracking-widest text-gray-400">{title || "演示视频占位"}</p>
+      <div className="flex flex-col items-center opacity-20 text-center px-6">
+        <Play size={32} fill="currentColor" />
+        <p className="text-[10px] font-black uppercase tracking-widest mt-4 text-gray-400">{title || "演示视频占位"}</p>
       </div>
     )}
-    {/* ⚠️ 这里删除了之前那个模拟手机听筒的 absolute div，彻底消灭“双层壳” */}
   </div>
 );
 
