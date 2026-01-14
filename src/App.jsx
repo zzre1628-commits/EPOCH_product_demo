@@ -215,17 +215,21 @@ const MePageDesign = () => {
 };
 
 // --- 用户体验全链路 ---
+// --- 用户体验全链路 (局部优化版) ---
 
 const VisualSPath = () => {
   const steps = [
-    { label: "录入 (Input)", sub: "非结构化语料库", icon: <MessageCircle />, desc: "支持多模态输入，保持用户原汁原味的叙述口吻，建立语言风格模型实现同频交流。" },
+    { label: "录入 (Input)", sub: "非结构化语料库", icon: <MessageCircle />, desc: "支持多模态输入，保持用户原汁原味叙述口吻，建立语言风格模型实现同频交流。" },
     { label: "解析 (Analysis)", sub: "时空上下文底座", icon: <Search />, desc: "自动捕捉物理环境标签（天气/位置），提炼情绪极性与感官偏好，建立用户情绪基准。" },
     { label: "启发 (Spark)", sub: "思维链 (COT) 推理", icon: <Target />, desc: "利用启发式思维引擎抛出激发思考的问题，记录用户反复纠结的关键点以识别认知盲区。" },
     { label: "沉淀 (Sediment)", sub: "高价值 RAG 向量库", icon: <Database />, desc: "构建 Embedding 向量数据库，存储深度对话产生的“共识”与“反思”，作为数字孪生雏形。" },
     { label: "叙事 (Narrative)", sub: "数字孪生自律动", icon: <GitBranch />, desc: "穿透行为层理解用户的价值观与渴望，最终生成具身化、叙事性的心灵周刊报告。" }
   ];
+
   return (
-    <div className="grid lg:grid-cols-2 gap-16 items-start">
+    /* 1. 调整比例：lg:grid-cols-[1.3fr_0.7fr] 让文字占约 65%，图片占 35%
+       2. gap-20: 增加左右间距，避免视觉拥挤 */
+    <div className="grid lg:grid-cols-[1.3fr_0.7fr] gap-20 items-start">
       <div className="relative py-10 px-6 text-left">
         <div className="absolute top-0 left-[28px] w-0.5 h-full bg-indigo-50 -z-10"></div>
         <div className="space-y-16">
@@ -245,14 +249,21 @@ const VisualSPath = () => {
           ))}
         </div>
       </div>
-      <div className="sticky top-32">
-        {/* 关联本地资源：流程图.png */}
-        <ImageSlot title="用户全链路逻辑流程图" src="/流程图.png" />
-        <p className="text-center mt-4 text-[10px] font-black text-gray-300 uppercase tracking-widest">User Flow Diagram</p>
+
+      {/* 3. 限制图片容器的最大宽度为 240px，这样长图会等比缩小，高度缩短 */}
+      <div className="sticky top-40 flex flex-col items-center">
+        <div className="w-full max-w-[240px]">
+          <ImageSlot title="用户全链路逻辑流程图" src="/流程图.png" />
+          <p className="text-center mt-6 text-[10px] font-black text-gray-300 uppercase tracking-widest leading-relaxed">
+            User Flow<br/>Diagram
+          </p>
+        </div>
       </div>
     </div>
   );
 };
+
+
 
 // --- 技术架构与数据库 ---
 
